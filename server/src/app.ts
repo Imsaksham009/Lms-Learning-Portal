@@ -2,10 +2,10 @@ require("dotenv").config();
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
-import { ErrorWithStatus } from "./Types/error";
-import { AppError } from "./Errors/errorHandler";
 import { catchAsync } from "./Errors/catchAsync";
-export const app = express();
+import { AppError } from "./Errors/errorHandler";
+import { errorMiddleWare } from "./Middlewares/errorMiddleware";
+const app = express();
 
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
@@ -30,13 +30,6 @@ app.get("*", (req: Request, res: Response) => {
 });
 
 //error middleware
-app.use(
-	(error: ErrorWithStatus, req: Request, res: Response, next: NextFunction) => {
-		if (!error.status) error.status = 404;
+app.use(errorMiddleWare);
 
-		res.status(error.status).json({
-			success: false,
-			message: error.message,
-		});
-	}
-);
+export { app };
