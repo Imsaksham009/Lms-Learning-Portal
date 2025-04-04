@@ -5,6 +5,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { catchAsync } from "./Errors/catchAsync";
 import { AppError } from "./Errors/errorHandler";
 import { errorMiddleWare } from "./Middlewares/errorMiddleware";
+import userRoute from "./Routes/userRoute";
 const app = express();
 
 app.use(cookieParser());
@@ -21,6 +22,8 @@ app.get(
 		return next(new AppError(400, "Error"));
 	})
 );
+
+app.use("/api/v1", userRoute);
 
 //unmatched routes
 app.get("*", (req: Request, res: Response) => {
