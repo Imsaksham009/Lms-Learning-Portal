@@ -6,7 +6,7 @@ import { StringValue } from "ms";
 
 require("dotenv").config();
 
-interface IUser extends Document {
+export interface IUser extends Document {
 	name: string;
 	email: string;
 	password: string;

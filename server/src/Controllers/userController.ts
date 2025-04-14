@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../Errors/catchAsync";
 import { AppError } from "../Errors/errorHandler";
-import { User } from "../Models/User/userModel";
+import { IUser, User } from "../Models/User/userModel";
+import { redis } from "../Redis/redis";
+import { Document } from "mongoose";
 
-interface UserRegistration {
+interface UserRegistration extends IUser, Document {
 	name: string;
 	email: string;
 	password: string;
@@ -19,6 +21,10 @@ interface UserLogin {
 	password: string;
 }
 
+export interface RequestWithUser extends Request {
+	user?: IUser | null;
+}
+
 export const registerUser = catchAsync(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const { name, email, password } = req.body;
@@ -28,6 +34,7 @@ export const registerUser = catchAsync(
 			password,
 		});
 		const token = user.getToken();
+		// await redis.set(user.id, JSON.stringify(user) as any);
 		res
 			.status(200)
 			.cookie("token", token, {
@@ -60,6 +67,7 @@ export const loginUser = catchAsync(
 			return next(new AppError(404, "Enter the credentials properly"));
 
 		const token = user.getToken();
+		// await redis.set(user.id, JSON.stringify(user) as any);
 		res
 			.status(200)
 			.cookie("token", token, {
@@ -69,7 +77,30 @@ export const loginUser = catchAsync(
 			.json({
 				success: true,
 				message: "User Logged-in",
-				user: user,
 			});
+	}
+);
+
+export const getUserProfile = catchAsync(
+	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		const userId = req.user?.id;
+
+		const user = await User.findById(userId);
+
+		res.status(200).json({
+			success: true,
+			user,
+		});
+	}
+);
+
+export const logoutUser = catchAsync(
+	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		res.clearCookie("token");
+		req.user = null;
+		res.status(200).json({
+			success: true,
+			message: "User logged out successfully",
+		});
 	}
 );

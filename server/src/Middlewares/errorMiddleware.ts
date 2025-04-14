@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
 import { TypeError } from "../Types/error";
+import { NextFunction, Request, Response } from "express";
 
 export const errorMiddleWare = (
 	error: TypeError,
@@ -16,9 +16,9 @@ export const errorMiddleWare = (
 		error.message = `Token is invalid`;
 	}
 
-	if (error.code === 11000) {
-		error.message = `User with email ${error.keyValue.email} already exists`;
-	}
+	// if (error.code === 11000) {
+	// 	error.message = `User with email ${error.keyValue.email} already exists`;
+	// }
 
 	res.status(error.status).json({
 		success: false,
