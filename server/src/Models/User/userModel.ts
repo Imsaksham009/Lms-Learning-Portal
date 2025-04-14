@@ -48,10 +48,10 @@ const userSchema: Schema<IUser> = new Schema<IUser>({
 	role: {
 		type: String,
 		enum: {
-			values: ["user", "admin"],
-			message: "Cano only be user or admin",
+			values: ["student", "admin", "instructor"],
+			message: "Can only be student or instructor",
 		},
-		default: "user",
+		default: "student",
 	},
 	avatar: {
 		public_id: {
