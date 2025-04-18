@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../Errors/catchAsync";
 import { AppError } from "../Errors/errorHandler";
-import { IUser, User } from "../Models/User/userModel";
+import { IUser, User } from "../Models/userModel";
 import { redis } from "../Redis/redis";
 import { Document } from "mongoose";
 

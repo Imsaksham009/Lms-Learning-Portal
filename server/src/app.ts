@@ -2,14 +2,16 @@ require("dotenv").config();
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
+import morgan from "morgan";
 import { catchAsync } from "./Errors/catchAsync";
 import { AppError } from "./Errors/errorHandler";
 import { errorMiddleWare } from "./Middlewares/errorMiddleware";
 import userRoute from "./Routes/userRoute";
 const app = express();
 
+process.env.NODE_ENV === "development" && app.use(morgan("dev"));
 app.use(cookieParser());
-app.use(express.json({ limit: "50mb" }));
+app.use(express.json({ limit: "20kb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(
 	cors({
