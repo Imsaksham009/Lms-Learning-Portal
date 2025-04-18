@@ -23,55 +23,58 @@ export interface IUser extends Document {
 	getToken(): string;
 }
 
-const userSchema: Schema<IUser> = new Schema<IUser>({
-	name: {
-		type: String,
-		required: [true, "Name of user is required"],
-	},
-	email: {
-		type: String,
-		required: [true, "User email is required"],
-		unique: true,
-		validate: validator.isEmail,
-	},
-	password: {
-		type: String,
-		required: [true, "Password is required"],
-		minLength: [8, "Password must be more than 8 characters long"],
-		select: false,
-	},
-	courses: [
-		{
-			type: Schema.ObjectId,
-		},
-	],
-	role: {
-		type: String,
-		enum: {
-			values: ["student", "admin", "instructor"],
-			message: "Can only be student or instructor",
-		},
-		default: "student",
-	},
-	avatar: {
-		public_id: {
+const userSchema: Schema<IUser> = new Schema<IUser>(
+	{
+		name: {
 			type: String,
-			// required: true,
-			default: "dummy_id",
+			required: [true, "Name of user is required"],
 		},
-		url: {
+		email: {
 			type: String,
-			// required: true,
-			default: "dummy_url",
+			required: [true, "User email is required"],
+			unique: true,
+			validate: validator.isEmail,
 		},
+		password: {
+			type: String,
+			required: [true, "Password is required"],
+			minLength: [8, "Password must be more than 8 characters long"],
+			select: false,
+		},
+		courses: [
+			{
+				type: Schema.ObjectId,
+			},
+		],
+		role: {
+			type: String,
+			enum: {
+				values: ["student", "admin", "instructor"],
+				message: "Can only be student or instructor",
+			},
+			default: "student",
+		},
+		avatar: {
+			public_id: {
+				type: String,
+				// required: true,
+				default: "dummy_id",
+			},
+			url: {
+				type: String,
+				// required: true,
+				default: "dummy_url",
+			},
+		},
+		createdAt: {
+			type: Date,
+			default: Date.now,
+		},
+		resetPasswordToken: String,
+		resetPasswordExpire: Date,
 	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	},
-	resetPasswordToken: String,
-	resetPasswordExpire: Date,
-});
+	{ timestamps: true }
+);
 
 userSchema.pre<IUser>("save", async function (next) {
 	if (!this.isModified("password")) return next();
