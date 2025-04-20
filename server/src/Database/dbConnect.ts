@@ -78,4 +78,4 @@ class DatabaseConnection {
 	}
 }
 
-export default DatabaseConnection;
+export const databaseConnect = new DatabaseConnection();

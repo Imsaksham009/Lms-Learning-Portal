@@ -13,7 +13,7 @@ router.post("/register", registerUser);
 
 router.post("/login", loginUser);
 
-router.post("/logout", isAuthenticated, logoutUser);
+router.post("/logout", logoutUser);
 
 router.get("/me", isAuthenticated, getUserProfile);
 

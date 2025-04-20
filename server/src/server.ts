@@ -1,5 +1,5 @@
 import { app } from "./app";
-import DatabaseConnection from "./Database/dbConnect";
+import { databaseConnect } from "./Database/dbConnect";
 require("dotenv").config();
 
 process.on("uncaughtException", (err: Error) => {
@@ -8,10 +8,9 @@ process.on("uncaughtException", (err: Error) => {
 });
 
 const startServer = async () => {
-	const newDataBase = new DatabaseConnection();
-	await newDataBase.connectDB();
+	await databaseConnect.connectDB();
 
-	if (newDataBase.isConnected === false) {
+	if (databaseConnect.isConnected === false) {
 		console.log(
 			"Failed to connect Database. Without connecting to database server wont start"
 		);
@@ -26,7 +25,7 @@ const startServer = async () => {
 		console.log("SIGTERM signal received: closing HTTP server");
 		server.close(async () => {
 			console.log("HTTP server closed");
-			await newDataBase.handleConnectionClose();
+			await databaseConnect.handleConnectionClose();
 			process.exit(1);
 		});
 	});
@@ -35,7 +34,7 @@ const startServer = async () => {
 		console.log("SIGINT signal received: closing HTTP server");
 		server.close(async () => {
 			console.log("HTTP server closed");
-			await newDataBase.handleConnectionClose();
+			await databaseConnect.handleConnectionClose();
 			process.exit(0);
 		});
 	});
