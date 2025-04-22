@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
-import { Document, model, Schema } from "mongoose";
+import mongoose, { Document, model, Schema } from "mongoose";
 import validator from "validator";
 import { StringValue } from "ms";
 
@@ -11,7 +11,6 @@ export interface IUser extends Document {
 	email: string;
 	password: string;
 	createdAt: Date;
-	courses: Array<{ courseId: string }>;
 	role: string;
 	avatar?: {
 		public_id: string;
@@ -19,6 +18,7 @@ export interface IUser extends Document {
 	};
 	resetPasswordToken?: string;
 	resetPasswordExpire?: Date;
+	enrolledCourses?: mongoose.Schema.Types.ObjectId[];
 	comparePassword(password: string): Promise<boolean>;
 	getToken(): string;
 }
@@ -41,11 +41,6 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
 			minLength: [8, "Password must be more than 8 characters long"],
 			select: false,
 		},
-		courses: [
-			{
-				type: Schema.ObjectId,
-			},
-		],
 		role: {
 			type: String,
 			enum: {
@@ -66,6 +61,12 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
 				default: "dummy_url",
 			},
 		},
+		enrolledCourses: [
+			{
+				type: Schema.ObjectId,
+				ref: "Course",
+			},
+		],
 		createdAt: {
 			type: Date,
 			default: Date.now,

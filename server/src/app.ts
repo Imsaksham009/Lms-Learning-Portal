@@ -8,8 +8,9 @@ import hpp from "hpp";
 import morgan from "morgan";
 import { catchAsync } from "./Errors/catchAsync";
 import { AppError } from "./Errors/errorHandler";
-import { errorMiddleWare } from "./Middlewares/errorMiddleware";
-import userRoute from "./Routes/userRoute";
+import { errorMiddleWare } from "./Middlewares/error.middleware";
+import courseRoute from "./Routes/course.route";
+import userRoute from "./Routes/user.route";
 const app = express();
 
 //security middlewares
@@ -47,7 +48,8 @@ app.get(
 );
 
 //routes
-app.use("/api/v1", userRoute);
+app.use("/api/v1/user", userRoute);
+app.use("/api/v1/course", courseRoute);
 
 //unmatched routes - 404 BAD REQUEST
 app.get("*", (req: Request, res: Response) => {

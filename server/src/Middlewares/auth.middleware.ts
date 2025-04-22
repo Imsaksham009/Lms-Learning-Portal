@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { catchAsync } from "../Errors/catchAsync";
 import { AppError } from "../Errors/errorHandler";
-import { User } from "../Models/userModel";
-import { RequestWithUser } from "../Controllers/userController";
+import { User } from "../Models/user.model";
+import { RequestWithUser } from "../Controllers/user.controller";
 
 interface JWTUser extends JwtPayload {
 	id: string;
