@@ -1,17 +1,21 @@
-import mongoose, { model, Schema } from "mongoose";
+import mongoose, { Document, model, ObjectId, Schema } from "mongoose";
 
-export interface ILesson extends Document {
+export interface ILesson {
+	_id: mongoose.Types.ObjectId;
 	title: string;
 	description: string;
 	videoUrl?: string;
 	duration: number;
 	order: number;
+	createdAt: Date;
 }
 
-export interface ISection extends Document {
+export interface ISection {
+	_id: mongoose.Types.ObjectId;
 	title: string;
 	order: number;
 	lessons: ILesson[];
+	createdAt: Date;
 }
 
 export interface ICourse extends Document {
@@ -36,17 +40,21 @@ export interface ICourse extends Document {
 }
 
 const LessonSchema = new Schema<ILesson>({
+	_id: { type: Schema.Types.ObjectId, auto: true },
 	title: { type: String, required: true },
 	description: { type: String, required: true },
 	videoUrl: { type: String },
 	duration: { type: Number, required: true },
 	order: { type: Number, required: true },
+	createdAt: { type: Date, default: Date.now },
 });
 
 const SectionSchema = new Schema<ISection>({
+	_id: { type: Schema.Types.ObjectId, auto: true },
 	title: { type: String, required: true },
 	order: { type: Number, required: true },
 	lessons: [LessonSchema],
+	createdAt: { type: Date, default: Date.now },
 });
 
 const CourseSchema = new Schema<ICourse>(

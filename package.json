@@ -1,0 +1,24 @@
+{
+	"name": "LMS",
+	"version": "1.0.0",
+	"description": "LMS-Learning Portal",
+	"main": "server/dist/app.js",
+	"scripts": {
+		"start": "node server/dist/app.js",
+		"server": "npm run dev --prefix server",
+		"dev": "npm run build --prefix Client && npm run server",
+		"dev:FE": "cd ./client && npm start",
+		"render-postbuild": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": ""
+	},
+	"homepage": "",
+	"dependencies": {}
+}
