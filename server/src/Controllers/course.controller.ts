@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../Errors/catchAsync";
-import { Course, ICourse, ISection } from "../Models/course.model";
+import { Course, ICourse, ILesson, ISection } from "../Models/course.model";
 import { AppError } from "../Errors/errorHandler";
 import { RequestWithUser } from "./user.controller";
 import mongoose, { Document } from "mongoose";
@@ -66,6 +66,12 @@ export const createSection = catchAsync(
 		if (!course)
 			return next(new AppError(404, "Please create the course first"));
 
+		if (course.instructorId.toString() !== req.user?._id?.toString()) {
+			return next(
+				new AppError(404, "You are not allowed to add content in this course")
+			);
+		}
+
 		const { title } = req.body;
 
 		const newSection: ISection = {
@@ -83,6 +89,62 @@ export const createSection = catchAsync(
 			success: true,
 			message: "Section created successfully",
 			course: course,
+		});
+	}
+);
+
+export const addLesson = catchAsync(
+	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		const { courseId, sectionId } = req.params;
+
+		if (!courseId || !sectionId)
+			return next(
+				new AppError(
+					404,
+					"Please provide the proper details of course and sectiion"
+				)
+			);
+
+		const course = await Course.findById(courseId);
+
+		if (!course)
+			return next(
+				new AppError(404, "Please create a course first to add lessons")
+			);
+		if (course.instructorId.toString() !== req.user?._id?.toString()) {
+			return next(
+				new AppError(404, "You are not authorized to access this resource")
+			);
+		}
+
+		const sectionsIndex: number = course?.sections.findIndex(
+			(section) => section._id.toString() === sectionId
+		);
+
+		if (sectionsIndex === -1)
+			return next(
+				new AppError(404, "Please create a section to add the lesson")
+			);
+
+		const { title, description, videoUrl, duration } = req.body;
+
+		const newLesson: ILesson = {
+			_id: new mongoose.Types.ObjectId(),
+			title,
+			description,
+			videoUrl,
+			duration,
+			order: course.sections[sectionsIndex].lessons.length + 1,
+			createdAt: new Date(),
+		};
+
+		course.sections[sectionsIndex].lessons.push(newLesson);
+		await course.save({ validateBeforeSave: false });
+
+		return res.status(200).json({
+			success: true,
+			message: "Lesson addded successfully",
+			course,
 		});
 	}
 );

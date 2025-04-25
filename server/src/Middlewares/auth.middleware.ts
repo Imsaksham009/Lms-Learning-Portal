@@ -27,3 +27,18 @@ export const isAuthenticated = catchAsync(
 		next();
 	}
 );
+
+export const isInstructor = catchAsync(
+	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		const user = req.user;
+		if (req.user?.role !== "instructor")
+			return next(
+				new AppError(
+					404,
+					"Only instructors are allowed to access this resource"
+				)
+			);
+
+		next();
+	}
+);
