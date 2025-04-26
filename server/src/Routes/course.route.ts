@@ -3,11 +3,13 @@ import {
 	addLesson,
 	createCourse,
 	createSection,
+	listAllCourses,
 } from "../Controllers/course.controller";
 import { isAuthenticated, isInstructor } from "../Middlewares/auth.middleware";
 
 const router = Router();
 
+router.get("/list", listAllCourses);
 router.post("/new", isAuthenticated, createCourse);
 
 router.put(

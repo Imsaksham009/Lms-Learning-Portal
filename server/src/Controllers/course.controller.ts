@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
-import { catchAsync } from "../Errors/catchAsync";
-import { Course, ICourse, ILesson, ISection } from "../Models/course.model";
-import { AppError } from "../Errors/errorHandler";
-import { RequestWithUser } from "./user.controller";
+import { NextFunction, Response } from "express";
 import mongoose, { Document } from "mongoose";
+import { catchAsync } from "../Errors/catchAsync";
+import { AppError } from "../Errors/errorHandler";
+import { Course, ICourse, ILesson, ISection } from "../Models/course.model";
+import { RequestWithUser } from "./user.controller";
 
 interface ICourseBody extends ICourse, Document {
 	title: string;
@@ -145,6 +145,17 @@ export const addLesson = catchAsync(
 			success: true,
 			message: "Lesson addded successfully",
 			course,
+		});
+	}
+);
+
+export const listAllCourses = catchAsync(
+	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		const courses = await Course.find();
+
+		return res.status(200).json({
+			success: true,
+			courses,
 		});
 	}
 );
