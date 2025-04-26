@@ -42,3 +42,16 @@ export const isInstructor = catchAsync(
 		next();
 	}
 );
+
+export const isAdmin = catchAsync(
+	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		const user = req.user;
+		console.log(user);
+		if (req.user?.role !== "admin")
+			return next(
+				new AppError(404, "Only admins are allowed to access this resource")
+			);
+
+		next();
+	}
+);

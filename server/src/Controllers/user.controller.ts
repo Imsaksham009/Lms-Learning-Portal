@@ -104,3 +104,22 @@ export const logoutUser = catchAsync(
 		});
 	}
 );
+
+//TODO: PAGINATION
+export const getAllUsers = catchAsync(
+	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		const { role } = req.params;
+		if (role !== "student" && role !== "instructor" && role !== "all")
+			return next(
+				new AppError(404, "We currently dont have the role mentioned")
+			);
+		let users;
+		if (role === "all") users = await User.find();
+		else users = await User.find({ role });
+
+		return res.status(200).json({
+			success: true,
+			users,
+		});
+	}
+);

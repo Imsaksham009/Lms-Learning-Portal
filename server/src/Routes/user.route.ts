@@ -1,13 +1,16 @@
 import { Router } from "express";
 import {
+	getAllUsers,
 	getUserProfile,
 	loginUser,
 	logoutUser,
 	registerUser,
 } from "../Controllers/user.controller";
-import { isAuthenticated } from "../Middlewares/auth.middleware";
+import { isAdmin, isAuthenticated } from "../Middlewares/auth.middleware";
 
 const router = Router();
+
+router.get("/list/:role", isAuthenticated, isAdmin, getAllUsers);
 
 router.post("/register", registerUser);
 

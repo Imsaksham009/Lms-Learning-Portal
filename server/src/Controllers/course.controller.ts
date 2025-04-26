@@ -149,6 +149,7 @@ export const addLesson = catchAsync(
 	}
 );
 
+//TODO: PAGINATION
 export const listAllCourses = catchAsync(
 	async (req: RequestWithUser, res: Response, next: NextFunction) => {
 		const courses = await Course.find();
