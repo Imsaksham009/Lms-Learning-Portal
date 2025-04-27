@@ -95,6 +95,8 @@ export const createSection = catchAsync(
 
 export const addLesson = catchAsync(
 	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		if (!req.file)
+			return next(new AppError(404, "Please upload the lecture you want add"));
 		const { courseId, sectionId } = req.params;
 
 		if (!courseId || !sectionId)
@@ -126,13 +128,13 @@ export const addLesson = catchAsync(
 				new AppError(404, "Please create a section to add the lesson")
 			);
 
-		const { title, description, videoUrl, duration } = req.body;
+		const { title, description, duration } = req.body;
 
 		const newLesson: ILesson = {
 			_id: new mongoose.Types.ObjectId(),
 			title,
 			description,
-			videoUrl,
+			videoUrl: req.file?.path,
 			duration,
 			order: course.sections[sectionsIndex].lessons.length + 1,
 			createdAt: new Date(),

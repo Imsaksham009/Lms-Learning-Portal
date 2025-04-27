@@ -19,4 +19,12 @@ const lmsAvatarStorage = new CloudinaryStorage({
 	} as any,
 });
 
-export { lmsAvatarStorage };
+const lmsLectureVideoStorage = new CloudinaryStorage({
+	cloudinary: cloudinary,
+	params: {
+		folder: "LMS-Lectures",
+		resource_type: "video",
+	} as any,
+});
+
+export { lmsAvatarStorage, lmsLectureVideoStorage };

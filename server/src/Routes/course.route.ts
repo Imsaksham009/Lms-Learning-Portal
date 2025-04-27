@@ -6,6 +6,13 @@ import {
 	listAllCourses,
 } from "../Controllers/course.controller";
 import { isAuthenticated, isInstructor } from "../Middlewares/auth.middleware";
+import multer from "multer";
+import { lmsLectureVideoStorage } from "../Cloudinary/cloudinary";
+
+const upload = multer({
+	storage: lmsLectureVideoStorage,
+	limits: { fileSize: 100000 },
+});
 
 const router = Router();
 
@@ -23,6 +30,7 @@ router.put(
 	"/lesson/add/:courseId/:sectionId",
 	isAuthenticated,
 	isInstructor,
+	upload.single("lectureFile"),
 	addLesson
 );
 

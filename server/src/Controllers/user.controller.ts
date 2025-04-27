@@ -27,7 +27,9 @@ export interface RequestWithUser extends Request {
 
 export const registerUser = catchAsync(
 	async (req: Request, res: Response, next: NextFunction) => {
-		console.log(req.file);
+		if (!req.file)
+			return next(new AppError(404, "Please upload the avatar of your choice"));
+
 		const { name, email, password } = req.body;
 		const user: UserRegistration = await User.create({
 			name,
