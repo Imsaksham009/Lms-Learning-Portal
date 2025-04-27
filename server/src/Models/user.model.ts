@@ -52,12 +52,12 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
 		avatar: {
 			public_id: {
 				type: String,
-				// required: true,
+				required: true,
 				default: "dummy_id",
 			},
 			url: {
 				type: String,
-				// required: true,
+				required: true,
 				default: "dummy_url",
 			},
 		},

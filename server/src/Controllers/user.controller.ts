@@ -27,11 +27,16 @@ export interface RequestWithUser extends Request {
 
 export const registerUser = catchAsync(
 	async (req: Request, res: Response, next: NextFunction) => {
+		console.log(req.file);
 		const { name, email, password } = req.body;
 		const user: UserRegistration = await User.create({
 			name,
 			email,
 			password,
+			avatar: {
+				public_id: req.file?.filename || "",
+				url: req.file?.path || "",
+			},
 		});
 		const token = user.getToken();
 		// await redis.set(user.id, JSON.stringify(user) as any);
