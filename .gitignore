@@ -1,6 +1,3 @@
-# Client not ready yet
-/Client/**/*
-
 #env
 .env
 
