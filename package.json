@@ -1,5 +1,5 @@
 {
-	"name": "LMS",
+	"name": "skillforge-server",
 	"version": "1.0.0",
 	"description": "LMS-Learning Portal",
 	"main": "server/dist/app.js",
