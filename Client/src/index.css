@@ -11,4 +11,5 @@
 	--text-home-heading-large: 48px;
 	--text-course-details-heading-small: 28px;
 	--text-course-details-heading-large: 48px;
+	--grid-cols-auto: "repeat(auto-fit, minmax(200px, 1fr))";
 }
