@@ -1,7 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-
+import coursesListReducer from "../reducers/coursesList/coursesListReducer";
 export const store = configureStore({
-	reducer: {},
+	reducer: {
+		coursesListReducer,
+	},
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
