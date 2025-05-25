@@ -6,6 +6,7 @@ interface Course {
 	_id: string;
 	title: string;
 	description: string;
+	thumbnail: string;
 	price: number;
 	slug: string;
 	instructorId: Record<string, any>;
@@ -15,7 +16,7 @@ interface Course {
 interface CoursesListState {
 	courses: Course[];
 	loading: boolean;
-	error?: string | null;
+	error?: Error | null;
 }
 
 const initialState: CoursesListState = {

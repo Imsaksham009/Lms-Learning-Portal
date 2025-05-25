@@ -7,6 +7,7 @@ interface CourseCardProps {
 	authorName: string;
 	ratings?: number;
 	coursePrice: number;
+	linkToCourse: string;
 }
 const CourseCard: FC<CourseCardProps> = ({
 	imageSrc,
@@ -14,10 +15,11 @@ const CourseCard: FC<CourseCardProps> = ({
 	authorName,
 	ratings,
 	coursePrice,
+	linkToCourse,
 }) => {
 	return (
 		<Link
-			to={"/"}
+			to={`/course/${linkToCourse}`}
 			className="border border-gray-500/40 shadow-md pb-6 overflow-hidden rounded-lg hover:shadow-lg duration-300 ease-in-out hover:scale-105 transition-transform hover:cursor-pointer hover:border-purple-500"
 		>
 			<img className="w-full rounded-lg" src={imageSrc} alt="course" />

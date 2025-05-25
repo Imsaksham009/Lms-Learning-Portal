@@ -4,9 +4,11 @@ import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
 import { RouterProvider } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 createRoot(document.getElementById("root")!).render(
 	<Provider store={store}>
 		<RouterProvider router={App} />
+		<Toaster />
 	</Provider>
 );

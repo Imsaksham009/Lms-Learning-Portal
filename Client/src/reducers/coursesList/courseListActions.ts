@@ -4,6 +4,7 @@ import {
 	allCoursesError,
 	allCoursesRequest,
 	allCoursesSuccess,
+	clearState,
 	type Course,
 } from "./coursesListReducer";
 
@@ -22,4 +23,8 @@ export const getAllCoursesList = async (dispatch: AppDispatch) => {
 		console.error("Error fetching courses list:", error);
 		dispatch(allCoursesError(error));
 	}
+};
+
+export const clearCourseStateAfterErrors = (dispatch: AppDispatch) => {
+	dispatch(clearState());
 };

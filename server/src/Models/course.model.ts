@@ -39,7 +39,7 @@ const CourseSchema = new Schema<ICourse>(
 		},
 		thumbnail: {
 			type: String,
-			// required: true,
+			required: true,
 		},
 		level: {
 			type: String,

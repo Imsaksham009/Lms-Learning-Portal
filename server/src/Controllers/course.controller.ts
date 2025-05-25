@@ -1,11 +1,11 @@
 import { NextFunction, Response } from "express";
-import mongoose, { Document } from "mongoose";
+import { Document } from "mongoose";
 import { catchAsync } from "../Errors/catchAsync";
 import { AppError } from "../Errors/errorHandler";
 import { Course, ICourse } from "../Models/course.model";
-import { RequestWithUser } from "./user.controller";
-import { ISection, Section } from "../Models/section.model";
 import { ILesson, Lesson } from "../Models/lesson.model";
+import { ISection, Section } from "../Models/section.model";
+import { RequestWithUser } from "./user.controller";
 
 interface ICourseBody extends ICourse, Document {
 	title: string;
@@ -18,8 +18,11 @@ interface ICourseBody extends ICourse, Document {
 
 export const createCourse = catchAsync(
 	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		if (!req.file)
+			return next(
+				new AppError(404, "Please upload the thumbnail of Course to procedd")
+			);
 		const { title, description, level, price, tags, category } = req.body;
-
 		const slug = title
 			.toLowerCase()
 			.replace(/[^\w\s]/gi, "") // Remove special characters
@@ -47,6 +50,7 @@ export const createCourse = catchAsync(
 			category,
 			slug,
 			instructorId,
+			thumbnail: req.file?.path,
 			sections: [],
 		});
 
@@ -156,7 +160,7 @@ export const listAllCourses = catchAsync(
 	async (req: RequestWithUser, res: Response, next: NextFunction) => {
 		const courses = await Course.find()
 			.populate("instructorId", "name email")
-			.select("_id title description price instructorId slug");
+			.select("_id title description price instructorId slug thumbnail");
 
 		return res.status(200).json({
 			success: true,
@@ -170,7 +174,7 @@ export const getCourseDetailsWithId = catchAsync(
 		const { id } = req.params;
 		if (!id) return next(new AppError(404, "Please provide the course id"));
 
-		const course = await Course.findById(id).populate("instructorId");
+		const course = await Course.findById(id).populate("instructorId sections");
 		if (!course) return next(new AppError(404, "Course not found"));
 
 		return res.status(200).json({
