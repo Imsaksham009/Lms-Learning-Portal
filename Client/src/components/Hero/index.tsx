@@ -4,7 +4,7 @@ import Search from "../SearchBar";
 
 const Hero: FC = () => {
 	return (
-		<div className="flex flex-col items-center justify-center w-full md:pt-36 pt-20 px-7 md:px-0 space-y-7 text-center bg-gradient-to-b from-purple-100/70 via-blue-100/70 to-transparent">
+		<div className="flex flex-col items-center justify-center w-full md:pt-36 pt-20 px-7 md:px-0 space-y-7 text-center bg-gradient-to-b from-purple-200/70 via-blue-100/70 to-transparent">
 			<h1 className="md:text-home-heading-large text-home-heading-small relative font-bold text-gray-800 max-w-3xl mx-auto">
 				Learn what you love, grow your way, and {""}
 				<span className="text-purple-800">Succeed on your terms.</span>

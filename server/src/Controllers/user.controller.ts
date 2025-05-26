@@ -61,30 +61,34 @@ export const loginUser = catchAsync(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const { email, password }: UserLogin = req.body;
 		if (!password)
-			return next(new AppError(404, "Enter the credentials properly"));
+			return next(new AppError(404, "Incorrect username or password"));
 
 		const user = await User.findOne({ email }).select("+password");
-		if (!user)
-			return next(
-				new AppError(404, "User not found! Enter the credential properly")
-			);
+		if (!user) return next(new AppError(404, "Incorrect username or password"));
 
 		const isUserPasswordCorrect: boolean = await user.comparePassword(password);
 		if (!isUserPasswordCorrect)
-			return next(new AppError(404, "Enter the credentials properly"));
+			return next(new AppError(404, "Incorrect username or password"));
 
 		const token = user.getToken();
 		// await redis.set(user.id, JSON.stringify(user) as any);
-		res
-			.status(200)
-			.cookie("token", token, {
-				maxAge: 5 * 24 * 60 * 60 * 100,
-				httpOnly: true,
-			})
-			.json({
-				success: true,
-				message: "User Logged-in",
-			});
+		setTimeout(() => {
+			res
+				.status(200)
+				.cookie("token", token, {
+					maxAge: 5 * 24 * 60 * 60 * 100,
+					httpOnly: true,
+				})
+				.json({
+					success: true,
+					message: "User Logged-in",
+					user: {
+						name: user.name,
+						email: user.email,
+						avatar: user.avatar,
+					},
+				});
+		}, 2000);
 	}
 );
 

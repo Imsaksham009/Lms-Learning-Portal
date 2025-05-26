@@ -6,7 +6,7 @@ import {
 	allCoursesSuccess,
 	clearState,
 	type Course,
-} from "./coursesListReducer";
+} from "./coursesList.reducer";
 
 interface CoursesApiResponse {
 	success: boolean;
@@ -19,9 +19,9 @@ export const getAllCoursesList = async (dispatch: AppDispatch) => {
 			"/api/v1/course/list"
 		);
 		dispatch(allCoursesSuccess(response.data.courses));
-	} catch (error) {
+	} catch (error: any) {
 		console.error("Error fetching courses list:", error);
-		dispatch(allCoursesError(error));
+		dispatch(allCoursesError(error.response.data.message));
 	}
 };
 

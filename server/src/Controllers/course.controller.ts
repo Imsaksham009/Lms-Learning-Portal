@@ -183,3 +183,18 @@ export const getCourseDetailsWithId = catchAsync(
 		});
 	}
 );
+
+export const getCourseDetailsWithSlug = catchAsync(
+	async (req: RequestWithUser, res: Response, next: NextFunction) => {
+		const { slug } = req.params;
+		if (!slug) return next(new AppError(404, "Please provide the course name"));
+
+		const course = await Course.findOne({ slug });
+		if (!course) return next(new AppError(404, "Course not found"));
+
+		return res.status(200).json({
+			success: true,
+			course,
+		});
+	}
+);

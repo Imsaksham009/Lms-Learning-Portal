@@ -5,17 +5,19 @@ import {
 	type DataRouter,
 	type RouteObject,
 } from "react-router-dom";
-import Layout from "./components/Layout";
 import { Fragment } from "react/jsx-runtime";
-import Home from "./components/Home/Home";
 import CoursePage from "./components/CoursePage";
+import Home from "./components/Home/Home";
+import Layout from "./components/Layout";
+import LoginSignupComponent from "./components/Login";
 
 const routes: RouteObject[] = createRoutesFromElements(
 	<Fragment>
 		<Route path="/" element={<Layout />}>
 			<Route index element={<Home />} />
 			<Route path="home" element={<Home />} />
-			<Route path="/course/:courseLink" element={<CoursePage />} />
+			<Route path="/course/:slug" element={<CoursePage />} />
+			<Route path="/login" element={<LoginSignupComponent />} />
 		</Route>
 	</Fragment>
 );

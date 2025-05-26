@@ -5,11 +5,11 @@ import { assets } from "../../assets/assets";
 import {
 	clearCourseStateAfterErrors,
 	getAllCoursesList,
-} from "../../reducers/coursesList/courseListActions";
+} from "../../reducers/coursesList/courseList.actions";
 import type {
 	Course,
 	CoursesListState,
-} from "../../reducers/coursesList/coursesListReducer";
+} from "../../reducers/coursesList/coursesList.reducer";
 import type { AppDispatch, RootState } from "../../store/store";
 import CourseCard from "../CourseCard";
 
@@ -53,7 +53,7 @@ const Course: FC = () => {
 								key={course._id}
 								imageSrc={course.thumbnail}
 								courseTitle={course.title}
-								authorName={course.instructorId.name}
+								authorName={course.instructorId?.name || "Unkown"}
 								ratings={5}
 								coursePrice={course.price}
 								linkToCourse={course.slug}

@@ -9,6 +9,7 @@ import {
 	createCourse,
 	createSection,
 	getCourseDetailsWithId,
+	getCourseDetailsWithSlug,
 	listAllCourses,
 } from "../Controllers/course.controller";
 import { isAuthenticated, isInstructor } from "../Middlewares/auth.middleware";
@@ -26,7 +27,8 @@ const router = Router();
 //list all courses
 router.get("/list", listAllCourses);
 //get course details with id
-router.get("/list/:id", getCourseDetailsWithId);
+router.get("/details/id/:id", getCourseDetailsWithId);
+router.get("/details/slug/:slug", getCourseDetailsWithSlug);
 //create a new course
 router.post(
 	"/new",
